@@ -17,7 +17,7 @@ int main(){
     // task 3
     printf("%d \n", __INT_MAX__);
     printf("%f \n", __FLT_MAX__);
-    printf("%f \n", __DBL_MAX__);
+    printf("%lf \n", __DBL_MAX__);
     // printf("%c \n", __CHAR_MAX__);
 
     // task 4
@@ -35,6 +35,54 @@ int main(){
     var1 = temp;
 
     //task 6
+    int int3;
+    printf("Enter integer 3: ");
+    scanf("%d",&int3);
+    if (int3 % 2 == 0)
+    {
+        printf("Even \n");
+    }
+    else
+    {
+        printf("Odd \n");
+    }
+
+    // task 7
+    float far, cel;
+    printf("Enter temperature: ");
+    scanf("%f",&far);
+    cel = ((far - 32.0) / 1.8);
+    printf("Temperature in celsius: %f\n", cel);
+
+    // task 8
+    int int4, total=1;
+    printf("Enter an integer: ");
+    scanf("%d",&int4);
+
+    while (int4 > 0)
+    {
+        total = (total * int4);
+        int4 --;
+    }
+
+    printf("%d \n", total);
+
+    // week 9
+    double distance, days;
+    printf("Enter number of days: ");
+    scanf("%lf",&days);
+    distance = days * 25900000000;
+    printf("Distance travelled by light: %lf\n", distance);
+    
+    // week 10
+    float principal, rate, time;
+    printf("Enter principal: ");
+    scanf("%f",&principal);
+    printf("Enter rate: ");
+    scanf("%f",&rate);
+    printf("Enter time: ");
+    scanf("%f",&time);
+    printf("%.2f\n", principal * (1 + (rate * time)));
 
     // return
     return 0;
