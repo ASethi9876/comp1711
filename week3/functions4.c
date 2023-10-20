@@ -50,7 +50,7 @@ int main ()
         case 'Q': break;
 
         default:  break;
-    }]]
+    }
 
     return 0;
 }

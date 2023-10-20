@@ -29,7 +29,7 @@ int isPrime (int int1)
     }
 }
 
-int concatStrings(char* str2,char* str3)
+char* concatStrings(char* str2,char* str3)
 {
     int len = str_len(str2) + str_len(str3);
     char str4[len];
@@ -37,12 +37,13 @@ int concatStrings(char* str2,char* str3)
     {
         str4[i] = str2[i];
     }
-    n = 0;
-    for (int j=i;j<len;j++)
+    int n = 0;
+    for (int j=str_len(str2);j<len;j++)
     {
         str4[j] = str3[n];
         n += 1;
     }
+    printf("%s\n",str4);
 }
 
 int main ()
@@ -66,4 +67,12 @@ int main ()
     scanf("%d", &int1);
     isPrime(int1);
 
+    char str2[50],str3[50];
+    printf("Enter string: ");
+    scanf("%s", str2);
+    printf("Enter string: ");
+    scanf("%s", str3);
+    concatStrings(str2,str3);
+
+    return 0;
 }
