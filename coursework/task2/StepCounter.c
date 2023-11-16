@@ -8,9 +8,17 @@
 // Define any additional variables here
 // Global variables for filename and FITNESS_DATA array
     FITNESS_DATA data[10000];
-    int counter = 0;
-    int smallestStepsRecord = 0;
-    int largestStepsRecord = 0;
+    char* smallestStepsDate;
+    char* smallestStepsTime;
+    char* largestStepsDate;
+    char* largestStepsTime;
+    char* longestPeriodStartDate;
+    char* longestPeriodStartTime;
+    char* longestPeriodEndDate;
+    char* longestPeriodEndTime;
+    float mean = 0;
+    char line[buffer_size];
+    char filename[buffer_size];
 
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
@@ -44,9 +52,10 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 
 // Complete the main function
-int main() {
-    char uInput = '0';
-    while (uInput != 'Q'){
+int main(){
+    char uInput = 'A';
+
+    while (1){
         printf("A: Enter filename to be imported \n");
         printf("B: Display total number of records in file \n");
         printf("C: Display date and time of the timeslot with the fewest steps \n");
@@ -54,12 +63,14 @@ int main() {
         printf("E: Display mean step count\n");
         printf("F: Display longest continuous period where the step count is above 500 steps \n");
         printf("Q: Exit \n");
-
         printf("Enter option: ");
-        scanf("%c",&uInput);
-
-        if (uInput == 'A'){
-            char filename[100];
+        
+        uInput = getchar();
+        while (getchar() != '\n');
+        
+        switch (uInput) {
+        case 'A':
+        case 'a':
             printf("Input filename: ");
             scanf("%s",filename);
 
@@ -69,56 +80,101 @@ int main() {
                 return 1;
             }
 
-           int buffer_size = 500;
-           char line[buffer_size];
-           char date[11];
-           char time[6];
-           char steps[10];
-           char pos[5];
-           int smallestSteps = 10000;
-           int largestSteps = 0;
-    
+            char date[11];
+            char time[6];
+            char steps[10];
+            char pos[5];
+            int smallestSteps = 10000;
+            int largestSteps = 0;
+            float total = 0;
+            int counter = 0;
+            int count500 = 0;
+            int count500Max = 0;
+            char* longestPeriodTempStartDate;
+            char* longestPeriodTempStartTime;
             while (fgets(line, buffer_size, file)){
                 tokeniseRecord(line, ",", date, time, steps);
                 strcpy(data[counter].date, date);
                 strcpy(data[counter].time, time);
                 strcpy(data[counter].steps, steps);
-                counter++;
 
                 int stepInt = atoi(steps);
+                total += stepInt;
+
+                if (stepInt > 500){
+                    if (count500 == 0){
+                        longestPeriodTempStartDate = data[counter].date;
+                        longestPeriodTempStartTime = data[counter].time; 
+                    }
+                    count500 += 1;
+
+                    if (count500 > count500Max){
+                        count500Max = count500;
+                        longestPeriodStartDate = longestPeriodTempStartDate;
+                        longestPeriodStartTime = longestPeriodTempStartTime;  
+                        longestPeriodEndDate = data[counter].date;
+                        longestPeriodEndTime = data[counter].time;    
+                    }
+
+                }
+
+                else{
+                    count500 = 0;
+                }
+
                 if (stepInt < smallestSteps){
-                    smallestStepsRecord = counter;
+                    smallestStepsDate = data[counter].date;
+                    smallestStepsTime = data[counter].time;
                     smallestSteps = stepInt;
                 }
+
                 if (stepInt > largestSteps){
-                    largestStepsRecord = counter;
+                    largestStepsDate = data[counter].date;
+                    largestStepsTime = data[counter].time;
                     largestSteps = stepInt;
                 }
+                counter++;
+
             }
+            mean = total / counter;
 
             fclose(file);
-        }
+            break;
         
-        else if (uInput == 'B'){
+        case 'B':
+        case 'b':
             printf("Total records: %d\n",counter);
-        } 
+            break;
 
-        else if (uInput == 'C'){
-            printf("%d\n",smallestStepsRecord);
-        }
+        case 'C':
+        case 'c':
+            printf("Fewest Steps: %s %s\n",smallestStepsDate,smallestStepsTime);
+            break;
 
-        else if (uInput == 'D'){
-            printf("%d\n",largestStepsRecord);
-        }
+        case 'D':
+        case 'd':
+            printf("Largest Steps: %s %s\n",largestStepsDate,largestStepsTime);
+            break;
 
-        else if (uInput == 'E'){
+        case 'E':
+        case 'e':
+            printf("Mean step count: %f\n",mean);
+            break;
 
-        }
+        case 'F':
+        case 'f':
+            printf("Longest period start: %s %s\n",longestPeriodStartDate, longestPeriodStartTime);
+            printf("Longest period end: %s %s\n",longestPeriodEndDate, longestPeriodEndTime);
+            break;
 
-        else if (uInput == 'F'){
+        case 'Q':
+        case 'q':
+            return 0;
+            break;
 
+        default:
+            printf("Invalid choice. \n");
+            break; 
         }
     }
-    return 0;
-
 }
