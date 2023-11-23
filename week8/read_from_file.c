@@ -5,7 +5,7 @@
 #define COLS 3
 
 // Function to tokenize a string
-void tokenize(char *input, int *array, int size) {
+int tokenize(char *input, int *array, int size) {
     // Create a copy of the input string as strtok modifies the string
     char *inputCopy = strdup(input);
 
@@ -15,6 +15,10 @@ void tokenize(char *input, int *array, int size) {
     while (token != NULL && i < size) {
         array[i++] = atoi(token);
         token = strtok(NULL, ",");
+    }
+
+    if (i < size){
+        return 1;
     }
 
     // Free the memory allocated by strdup
@@ -44,7 +48,9 @@ int main() {
 
     // Tokenize the line into an array of integers
     int values[ROWS * COLS];
-    tokenize(line, values, ROWS*COLS);
+    if (tokenize(line, values, ROWS*COLS)){
+        printf("Error\n");
+    }
 
     // Create a 2D array from the values
     int data[ROWS][COLS];
