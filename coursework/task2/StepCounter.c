@@ -49,13 +49,10 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
                     }
 
-
-
-
 // Complete the main function
 int main(){
     while (1){
-        char uInput = 'A';
+        char uInput = 'A';     
         printf("A: Enter filename to be imported \n");
         printf("B: Display total number of records in file \n");
         printf("C: Display date and time of the timeslot with the fewest steps \n");
@@ -63,16 +60,15 @@ int main(){
         printf("E: Display mean step count\n");
         printf("F: Display longest continuous period where the step count is above 500 steps \n");
         printf("Q: Exit \n");
-        printf("Enter option: ");
+        printf("Enter option: ");    
+        scanf(" %c",&uInput);
 
-        uInput = getchar();
-        while (getchar() != '\n');
-        
+
         switch (uInput) {
         case 'A':
         case 'a':
             printf("Input filename: ");
-            scanf("%s",filename);
+            scanf(" %s",filename);
 
             FILE *file = fopen(filename, "r");
             if (file == NULL) {
@@ -139,7 +135,6 @@ int main(){
             mean = total / counter;
             fclose(file);
 
-            fflush(stdin); // from https://www.sciencedirect.com/topics/computer-science/scanf#:~:text=Problems%20can%20occur%20when%20using,that%20is%2C%20the%20keyboard), to prevent an issue with getchar after statement A is chosen
             break;
         
         case 'B':
@@ -149,12 +144,12 @@ int main(){
 
         case 'C':
         case 'c':
-            printf("Fewest Steps: %s %s\n",smallestStepsDate,smallestStepsTime);
+            printf("Fewest steps: %s %s\n",smallestStepsDate,smallestStepsTime);
             break;
 
         case 'D':
         case 'd':
-            printf("Largest Steps: %s %s\n",largestStepsDate,largestStepsTime);
+            printf("Largest steps: %s %s\n",largestStepsDate,largestStepsTime);
             break;
 
         case 'E':
