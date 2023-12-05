@@ -1,0 +1,5 @@
+notes
+when a function ends allocated memory is deleted
+to avoid, memory needs to be allocated dynamically
+malloc() dynamically allocates, C doesn't remove this memory
+

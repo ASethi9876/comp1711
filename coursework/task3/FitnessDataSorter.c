@@ -30,7 +30,6 @@ int main() {
     char filename[100];
     printf("Enter filename: ");
     scanf("%s",filename);
-
     
     FILE *file = fopen(filename,"r");
     if (file == NULL) {
@@ -39,9 +38,16 @@ int main() {
     }
 
     char* nameAppend = ".tsv";
-    strncat(filename,nameAppend,4);
+    char* new = strncat(filename,nameAppend,4);
+    FILE *newfile = fopen(new, "w");
+    if (newfile == NULL)
+    {
+        printf("Error opening file\n");
+        return 1;
+    }
     
     FitnessData data[10000];
+    FitnessData sortedData[10000];
     int counter = 0;
     int buffer_size = 500;
     char line[buffer_size];
@@ -52,19 +58,25 @@ int main() {
 
     while (fgets(line, buffer_size, file)){
         tokeniseRecord(line, delim, date, time, steps);
+        for (int i=0;i<counter;i++){
+            printf("%d",sortedData[i].steps);
+            if (data[counter].steps > sortedData[i].steps){
+                for (int j=counter;j>i;j--){
+                    sortedData[j+1] = sortedData[j];
+                }
+                sortedData[i] = data[counter];
+            }
+            printf("%d",sortedData[i].steps);
+        }
         counter++;
+    }
+    
+
+    for (int i=0;i<counter;i++){
+        fprintf(newfile, "%s %s %d\n", sortedData[i].date,sortedData[i].time,sortedData[i].steps);
     }
 
     fclose(file);
-    char* nameAppend = ".tsv";
-    strncat(filename,nameAppend,4);
-
-    FILE *newfile = fopen(filename, "w"); // or "a", "w+", "a+"
-    if (newfile == NULL)
-    {
-        printf("Error opening file\n");
-        return 1;
-    }
     fclose(newfile);
     return 0;
 }
